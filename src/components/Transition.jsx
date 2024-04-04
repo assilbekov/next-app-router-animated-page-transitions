@@ -2,7 +2,6 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useRef, useState } from "react"
 
-
 export const Transition = ({ children }) => {
   const container = useRef(null);
   const [selectedChildren, setSelectedChildren] = useState(children);
