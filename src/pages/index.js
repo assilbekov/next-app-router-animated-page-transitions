@@ -1,11 +1,26 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
+import { useContext, useRef } from "react";
+import { TransitionContext } from "@/contexts/TransitionContext";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const imageRef = useRef(null);
+  const containerRef = useRef(null);
+  const { timeline } = useContext(TransitionContext);
+
+  useGSAP(() => {
+    const targets = gsap.utils.toArray(["p", imageRef.current])
+    gsap.fromTo(targets, { y: 40, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.25 })
+    timeline.add(gsap.to(containerRef.current, { opacity: 0 }))
+  }, { scope: containerRef })
+
   return (
     <main
+      ref={containerRef}
       className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
@@ -13,7 +28,7 @@ export default function Home() {
           Get started by editing&nbsp;
           <code className="font-mono font-bold">src/pages/index.js</code>
         </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
+        <div ref={imageRef} className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
           <a
             className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
             href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
