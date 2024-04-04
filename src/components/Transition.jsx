@@ -1,20 +1,29 @@
+import { TransitionContext } from "@/contexts/TransitionContext";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useRef, useState } from "react"
+import { useContext, useRef, useState } from "react"
 
 export const Transition = ({ children }) => {
-  const container = useRef(null);
   const [selectedChildren, setSelectedChildren] = useState(children);
+  const { timeline } = useContext(TransitionContext);
+  const { contextSafe } = useGSAP();
+
+  const exit = contextSafe(() => {
+    timeline.play().then(() => {
+      window.scrollTo(0, 0)
+      setSelectedChildren(children);
+      timeline.pause().clear();
+    })
+  })
 
   useGSAP(() => {
-    gsap.to(container.current, { opacity: 0, duration: 1 }).then(() => {
-      setSelectedChildren(children)
-      gsap.to(container.current, { opacity: 1, duration: 1 })
-    })
+    if (children.key !== selectedChildren.key) {
+      exit();
+    }
   }, [children])
 
   return (
-    <div ref={container}>
+    <div>
       {selectedChildren}
     </div>
   )
