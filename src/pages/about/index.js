@@ -27,6 +27,7 @@ export default function About() {
             placeholder='blur'
             fill
             style={{ objectFit: "cover" }}
+            alt="Picture of a mountain"
           />
         </div>
       </div>

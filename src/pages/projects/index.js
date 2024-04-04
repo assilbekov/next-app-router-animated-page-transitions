@@ -29,6 +29,7 @@ export default function Projects() {
             placeholder='blur'
             fill
             style={{objectFit: "cover"}}
+            alt="Picture of a mountain"
           />
         </div>
       </div>
